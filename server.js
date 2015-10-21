@@ -2,19 +2,17 @@
 //  OpenShift sample Node application
 var express = require('express');
 var fs      = require('fs');
+var jsdom = require("jsdom");
+var firebase = require('firebase');
+
+var firebaseRef = new firebase("https://projectk.firebaseio.com/");
 
 
 /**
  *  Define the sample application.
  */
-
-var expressApp = express();
-
-expressApp.get("/hello",function(req,res){
-   res.send("Hello World"); 
-});
 var SampleApp = function() {
-
+    var arrayJson =[];
     //  Scope.
     var self = this;
 
@@ -111,9 +109,42 @@ var SampleApp = function() {
             res.send(self.cache_get('index.html') );
         };
         
-        self.routes['/hello']=function(req,res){
-            res.setHeader('Content-Type', 'text/html');
-            res.send("Hello World" );
+        self.routes['/update-db']=function(req,res){
+            firebaseRef.remove();
+            jsdom.env(
+              "http://villinois.museum.state.il.us/jquery-map",
+              ["http://code.jquery.com/jquery.js"],
+                function (err, window) {
+                    var $ = window.$;
+                    var array=($(".pager-last > a").attr('href')).split('=');
+                  for(i=0;i<=array[1];i++){
+                    console.log("http://villinois.museum.state.il.us/jquery-map?page="+i);
+
+                    jsdom.env(
+                        "http://villinois.museum.state.il.us/jquery-map?page="+i,
+                        ["http://code.jquery.com/jquery.js"],
+                        function(err,window){
+                            var $ =window.$;
+                                $('.even').each(function(index){
+                                    if($(this).children(".views-field-title").text().length>0){
+                                       firebaseRef.push({
+                                            title:$(this).children(".views-field-title").text().trim(),
+                                            body:$(this).children(".views-field-body").text().trim(),
+                                            geo:$(this).children(".views-field-field-geolocation").text().trim(),
+                                            tags:$(this).children(".views-field-field-tags").text().trim(),
+                                            topic:$(this).children(".views-field-field-topic").text().trim(),
+                                            time:$(this).children(".views-field-field-time").text().trim(),
+                                            location:$(this).children(".views-field-field-location").text().trim(),
+                                            regions:$(this).children(".views-field-field-regions").text().trim()
+                                       });
+                                    }
+                                });
+                                window.close();
+                                console.log(' success');
+                            });          
+                  }   
+              });
+             res.send("success");
         };
     };
 
