@@ -146,6 +146,17 @@ var SampleApp = function() {
               });
              res.send("success");
         };
+        
+        self.routes['/getPlaces']=function(req,res){
+            firebaseRef.orderByValue().on("value", function(snapshot) {
+                snapshot.forEach(function(data) {
+                    arrayJson.push(data.val());
+                });
+                res.send(arrayJson);
+            });
+            
+        };
+        
     };
 
 
