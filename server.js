@@ -7,6 +7,12 @@ var fs      = require('fs');
 /**
  *  Define the sample application.
  */
+
+var expressApp = express();
+
+expressApp.get("/hello",function(req,res){
+   res.send("Hello World"); 
+});
 var SampleApp = function() {
 
     //  Scope.
