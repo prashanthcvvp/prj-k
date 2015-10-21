@@ -110,6 +110,11 @@ var SampleApp = function() {
             res.setHeader('Content-Type', 'text/html');
             res.send(self.cache_get('index.html') );
         };
+        
+        self.routes['/hello']=function(req,res){
+            res.setHeader('Content-Type', 'text/html');
+            res.send("Hello World" );
+        };
     };
 
 
