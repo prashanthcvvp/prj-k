@@ -148,10 +148,12 @@ var SampleApp = function() {
         };
         
         self.routes['/getPlaces']=function(req,res){
+            arrayJson=[];
             firebaseRef.orderByValue().on("value", function(snapshot) {
                 snapshot.forEach(function(data) {
                     arrayJson.push(data.val());
                 });
+                console.log(arrayJson.length);
                 res.send(arrayJson);
             });
             
