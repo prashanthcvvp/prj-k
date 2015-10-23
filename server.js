@@ -154,7 +154,7 @@ var SampleApp = function() {
                     arrayJson.push(data.val());
                 });
                 console.log(arrayJson.length);
-                res.send(arrayJson);
+                res.json(arrayJson);
             });
             
         };
