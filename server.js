@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/bin/env node
 //  OpenShift sample Node application
 var express = require('express');
@@ -111,6 +112,25 @@ var SampleApp = function() {
         
         self.routes['/update-db']=function(req,res){
             firebaseRef.remove();
+=======
+var express = require('express');
+var http_req = require('request');
+var jsdom = require("jsdom");
+var mongojs = require('mongojs');
+
+db=mongojs('projectK',['projectK']);
+
+var expressApp = express();
+var arrayJson =[];
+
+expressApp.get('/',function(req,res){
+    db.projectK.remove(function(error,result){
+        if(error){
+            console.log('Error!!');
+        }else{
+            console.log('Removed');
+            console.log("Get request");
+>>>>>>> origin/master
             jsdom.env(
               "http://villinois.museum.state.il.us/jquery-map",
               ["http://code.jquery.com/jquery.js"],
@@ -127,7 +147,11 @@ var SampleApp = function() {
                             var $ =window.$;
                                 $('.even').each(function(index){
                                     if($(this).children(".views-field-title").text().length>0){
+<<<<<<< HEAD
                                        firebaseRef.push({
+=======
+                                       db.projectK.insert({
+>>>>>>> origin/master
                                             title:$(this).children(".views-field-title").text().trim(),
                                             body:$(this).children(".views-field-body").text().trim(),
                                             geo:$(this).children(".views-field-field-geolocation").text().trim(),
@@ -144,6 +168,7 @@ var SampleApp = function() {
                             });          
                   }   
               });
+<<<<<<< HEAD
              res.send("success");
         };
         
@@ -212,3 +237,21 @@ var zapp = new SampleApp();
 zapp.initialize();
 zapp.start();
 
+=======
+            //res.send("success");
+        }
+    });
+});
+
+expressApp.get('/getPlaces',function(req,res){
+    db.projectK.find(function(err,docs){
+       if(err){
+           console.log("Database error");
+       }else{
+           res.json(docs);
+       }
+    });
+});
+expressApp.listen("3000");
+console.log("Server on port 3000");
+>>>>>>> origin/master
